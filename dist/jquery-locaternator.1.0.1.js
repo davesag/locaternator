@@ -1,8 +1,19 @@
 /*!
- * A jQuery plugin for specific location handling - v1.0.0 - 2014-07-22
+ * A jQuery plugin for specific location handling - v1.0.1 - 2014-07-22
  * https://github.com/davesag/locaternator
  * Copyright (c) 2014 Dave Sag; Licensed MIT
  */
+(function() {
+  if (typeof jQuery === "undefined") {
+    throw "Expected jQuery to have been loaded before this script.";
+  }
+
+  if (typeof async === "undefined") {
+    throw "Expected async to have been loaded before this script.";
+  }
+
+}).call(this);
+
 (function() {
   (function($, async, document) {
     var closestLocationFinder, distanceBetween;

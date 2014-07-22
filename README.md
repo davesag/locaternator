@@ -103,9 +103,9 @@ This will output the final distribution files into the `dist/` folder, prefixed 
 
 Files created are:
 
-* `jquery-locaternator.1.0.0.js` — the 'developer' version.
-* `jquery-locaternator.1.0.0.min.js` — The minified version for production use.
-* `jquery-locaternator.1.0.0.min.js.map` — The `sourcemap` file for debugging using the minified version.
+* `jquery-locaternator.1.0.1.js` — the 'developer' version.
+* `jquery-locaternator.1.0.1.min.js` — The minified version for production use.
+* `jquery-locaternator.1.0.1.min.js.map` — The `sourcemap` file for debugging using the minified version.
 
 ## Thanks
 
