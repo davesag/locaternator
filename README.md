@@ -5,12 +5,19 @@ A simple jQuery plugin that uses freegeoip.net to determine where you are, and t
 
 ## Usage
 
+### Prerequsites
+
+The **Locaternator** uses [jQuery](https://jquery.com) and [async](https://github.com/caolan/async) to do its stuff.
+
+### To Use
+
 Your page should expect a `document` level event called "`locaternated`"
 
 ```javascript
 $(document).ready(function(){
   $(document).on("locaternated", function(evt, location){
     console.log("Found location", location);
+    // do fancy stuff with location
   });
   $.Locaternator()
 });
@@ -44,6 +51,7 @@ whether provided directly as an array, ala
 $(document).ready(function(){
   $(document).on("locaternated", function(evt, location, locations, closest){
     console.log("Found location", location, "from locations", locations, "closest is", closest);
+    // do fancy stuff with location, locations, and closest
   });
   $.Locaternator({
     locations: myLocationsArray // or "/someLocations.json"
