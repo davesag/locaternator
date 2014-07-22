@@ -1,7 +1,7 @@
 locaternator
 ============
 
-A simple jQuery plugin that uses freegeoip.net to determine where you are, and the closest location to you from a given set of locations
+A simple jQuery plugin that uses [freegeoip.net](http://freegeoip.net) to determine where you are, and the closest location to you from a given set of locations.
 
 ## Usage
 
@@ -27,22 +27,22 @@ You can also supply an array of locations to compare to your location, either as
 `url` of an `ajax.get` request.  The array should be of the format
 
 ```javascript
-[
-  {
-    name: "brisbane",
-    coordinate: {
-      lat: -27.4073899,
-      lon: 153.0028595
-    }
-  },
-  {
-    name: "brighton",
-    coordinate: {
-      lat: 50.837418,
-      lon: -0.1061897
-    }
-  }
-]
+var myLocationsArray = [
+      {
+        name: "brisbane",
+        coordinate: {
+          lat: -27.4073899,
+          lon: 153.0028595
+        }
+      },
+      {
+        name: "brighton",
+        coordinate: {
+          lat: 50.837418,
+          lon: -0.1061897
+        }
+      }
+    ]
 ```
 
 whether provided directly as an array, ala
@@ -58,15 +58,23 @@ $(document).ready(function(){
   })
 });
 ```
+
+or loaded from a `json` feed / file.
+
+You can add whatever other fields you wish to the location object so long as it has a `name` and `coordinate` fields,
+and the `coordinate` field has a `lat` and a `lon` represented as decimal degrees.
+
+## Buildage
+
 ### First
 
-Assuming you have `Node.js` installed.
+Assuming you have `Node.js`, `grunt`, and `grunt-cli` installed.
 
 ```bash
 npm install
 ```
 
-## To Test
+### To Test
 
 ```bash
 grunt test
@@ -86,3 +94,22 @@ Files created are:
 * `jquery-locaternator.1.0.0.min.js` — The minified version for production use.
 * `jquery-locaternator.1.0.0.min.js.map` — The `sourcemap` file for debugging using the minified version.
 
+## Thanks
+
+Thanks to [freegeoip.net](http://freegeoip.net) for providing such a cool, free service.
+
+### Important Note
+
+*Please don't use this utility to thrash the FreeGeoIP system*
+
+#### Limits
+
+From the [freegeoip.net page](http://freegeoip.net)
+
+> API usage is limited to 10,000 queries per hour.
+> After reaching this limit, all requests will result
+> in HTTP 403 (Forbidden) until the roll over.
+
+## License
+
+Available for commercial or non-commercial use under the MIT license.
