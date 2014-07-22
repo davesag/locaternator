@@ -58,11 +58,24 @@ $(document).ready(function(){
   })
 });
 ```
-
 or loaded from a `json` feed / file.
 
 You can add whatever other fields you wish to the location object so long as it has a `name` and `coordinate` fields,
 and the `coordinate` field has a `lat` and a `lon` represented as decimal degrees.
+
+### Custom GeoIP server
+
+You can also add options for using a different GeoIP server if, for example, you are
+[running your own server](https://github.com/fiorix/freegeoip).
+
+```javascript
+$.Locaternator({
+  geoIP: {
+    jsonURL: "/whatever",
+    dataType: "json"
+  }
+})
+```
 
 ## Buildage
 

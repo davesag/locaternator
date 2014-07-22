@@ -40,16 +40,18 @@
       var getLocation, jobs, loadLocations, opts;
       opts = $.extend(true, {}, $.Locaternator.options);
       this.options = typeof options === "object" ? $.extend(true, opts, options) : opts;
-      getLocation = function(callback) {
-        var geoIPOtions;
-        geoIPOtions = {
-          url: "http://freegeoip.net/json/",
-          dataType: "jsonp"
+      getLocation = (function(_this) {
+        return function(callback) {
+          var geoIPOtions;
+          geoIPOtions = {
+            url: _this.options.geoIP.jsonURL,
+            dataType: _this.options.geoIP.dataType
+          };
+          $.ajax(geoIPOtions).done(function(data) {
+            callback(null, data);
+          });
         };
-        $.ajax(geoIPOtions).done(function(data) {
-          callback(null, data);
-        });
-      };
+      })(this);
       loadLocations = (function(_this) {
         return function(callback) {
           if (!(_this.options.locations instanceof String || _this.options.locations instanceof Array)) {
@@ -88,7 +90,11 @@
       });
     };
     return $.Locaternator.options = {
-      locations: ""
+      locations: "",
+      geoIP: {
+        jsonURL: "http://freegeoip.net/json/",
+        dataType: "jsonp"
+      }
     };
   })(jQuery, async, document);
 

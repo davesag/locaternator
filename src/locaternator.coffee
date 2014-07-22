@@ -28,10 +28,10 @@
     opts = $.extend true, {}, $.Locaternator.options
     @options = if typeof options is "object" then $.extend(true, opts, options) else opts
 
-    getLocation = (callback) ->
+    getLocation = (callback) =>
       geoIPOtions =
-        url: "http://freegeoip.net/json/"
-        dataType: "jsonp"
+        url: @options.geoIP.jsonURL
+        dataType: @options.geoIP.dataType
       $.ajax(geoIPOtions).done (data) ->
         callback null, data
         return
@@ -69,5 +69,8 @@
   # defaults
   $.Locaternator.options =
     locations: ""
+    geoIP:
+      jsonURL: "http://freegeoip.net/json/"
+      dataType: "jsonp"
 ) jQuery, async, document
 
