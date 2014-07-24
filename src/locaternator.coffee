@@ -38,7 +38,7 @@
       return
 
     loadLocations = (callback) =>
-      unless @options.locations instanceof String or @options.locations instanceof Array
+      unless typeof @options.locations is "string" or @options.locations instanceof Array
         callback("expected locations option to be a string or array", null)
         return
       if @options.locations is ""

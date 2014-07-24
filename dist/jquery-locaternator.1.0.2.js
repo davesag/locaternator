@@ -1,5 +1,5 @@
 /*!
- * A jQuery plugin for specific location handling - v1.0.1 - 2014-07-22
+ * A jQuery plugin for specific location handling - v1.0.2 - 2014-07-24
  * https://github.com/davesag/locaternator
  * Copyright (c) 2014 Dave Sag; Licensed MIT
  */
@@ -65,7 +65,7 @@
       })(this);
       loadLocations = (function(_this) {
         return function(callback) {
-          if (!(_this.options.locations instanceof String || _this.options.locations instanceof Array)) {
+          if (!(typeof _this.options.locations === "string" || _this.options.locations instanceof Array)) {
             callback("expected locations option to be a string or array", null);
             return;
           }
