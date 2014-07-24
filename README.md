@@ -49,9 +49,9 @@ whether provided directly as an array, ala
 
 ```javascript
 $(document).ready(function(){
-  $(document).on("locaternated", function(evt, location, locations, closest){
-    console.log("Found location", location, "from locations", locations, "closest is", closest);
-    // do fancy stuff with location, locations, and closest
+  $(document).on("locaternated", function(evt, yourLocation, locations, closest){
+    console.log("You are at", yourLocation, "closest is", closest, "remaining locations sorted by distance", locations);
+    // do fancy stuff with yourLocation, locations, and closest
   });
   $.Locaternator({
     locations: myLocationsArray // or "/someLocations.json"
@@ -103,9 +103,9 @@ This will output the final distribution files into the `dist/` folder, prefixed 
 
 Files created are:
 
-* `jquery-locaternator.1.0.2.js` — the 'developer' version.
-* `jquery-locaternator.1.0.2.min.js` — The minified version for production use.
-* `jquery-locaternator.1.0.2.min.js.map` — The `sourcemap` file for debugging using the minified version.
+* `jquery-locaternator.1.0.3.js` — the 'developer' version.
+* `jquery-locaternator.1.0.3.min.js` — The minified version for production use.
+* `jquery-locaternator.1.0.3.min.js.map` — The `sourcemap` file for debugging using the minified version.
 
 ## Thanks
 

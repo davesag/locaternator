@@ -10,18 +10,15 @@
     c = 2 * Math.atan2(Math.sqrt(a), Math.sqrt(1 - a))
     return R * c
 
-  closestLocationFinder = (currentLocation, locations) ->
-    #loop over offices, calculate distance, new hash of office name: distance, sort by distance, then select top
-    none =
-      name: none
-      coordinate:
-        lat: null
-        lon: null
-    shortest = [none, 100000000000]
+  sortByClosest = (currentLocation, locations) ->
+    sortedLocations = []
     for loc in locations
       distance = distanceBetween(currentLocation, loc.coordinate)
-      shortest = [loc, distance] if distance < shortest[1]
-    return shortest[0]
+      sortedLocations.push({location: loc, distance: distance})
+    sortedLocations.sort (a,b) ->
+      return a.distance - b.distance
+    result = (sloc.location for sloc in sortedLocations)
+    return result
 
   # Main jQuery method.
   $.Locaternator = (options) ->
@@ -62,8 +59,9 @@
         localCoord =
           lat: result.location.latitude
           lon: result.location.longitude
-        closest = closestLocationFinder(localCoord, result.locations)
-        $(document).trigger "locaternated", [result.location, result.locations, closest]
+        sorted = sortByClosest(localCoord, result.locations)
+        closest = sorted.shift()
+        $(document).trigger "locaternated", [result.location, sorted, closest]
       return
 
   # defaults

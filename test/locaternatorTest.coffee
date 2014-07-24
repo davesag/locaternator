@@ -40,9 +40,9 @@
     $(document).on "locaternated", (evt, location, locations, closest) ->
       notEqual evt, null, "expected the event to not be null"
       equal typeof location.latitude, "number", "expected the location's latitude to be a number, not #{typeof location.latitude}"
-      equal locations.length, 2, "expected the locations array to be empty"
+      equal locations.length, 1, "expected the locations array to only have one element"
       notEqual closest.name, "none", "expected the closest location to not be 'none'"
-      console.debug closest
+      console.debug closest, locations
       start()
     $.Locaternator({locations: testLocations})
 ) jQuery

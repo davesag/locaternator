@@ -1,5 +1,5 @@
 /*!
- * A jQuery plugin for specific location handling - v1.0.2 - 2014-07-24
+ * A jQuery plugin for specific location handling - v1.0.3 - 2014-07-24
  * https://github.com/davesag/locaternator
  * Copyright (c) 2014 Dave Sag; Licensed MIT
  */
@@ -16,7 +16,7 @@
 
 (function() {
   (function($, async, document) {
-    var closestLocationFinder, distanceBetween;
+    var distanceBetween, sortByClosest;
     distanceBetween = function(currentLocation, otherLocation) {
       var R, a, a1, a2, c, d1, d2;
       R = 6371;
@@ -28,24 +28,30 @@
       c = 2 * Math.atan2(Math.sqrt(a), Math.sqrt(1 - a));
       return R * c;
     };
-    closestLocationFinder = function(currentLocation, locations) {
-      var distance, loc, none, shortest, _i, _len;
-      none = {
-        name: none,
-        coordinate: {
-          lat: null,
-          lon: null
-        }
-      };
-      shortest = [none, 100000000000];
+    sortByClosest = function(currentLocation, locations) {
+      var distance, loc, result, sloc, sortedLocations, _i, _len;
+      sortedLocations = [];
       for (_i = 0, _len = locations.length; _i < _len; _i++) {
         loc = locations[_i];
         distance = distanceBetween(currentLocation, loc.coordinate);
-        if (distance < shortest[1]) {
-          shortest = [loc, distance];
-        }
+        sortedLocations.push({
+          location: loc,
+          distance: distance
+        });
       }
-      return shortest[0];
+      sortedLocations.sort(function(a, b) {
+        return a.distance - b.distance;
+      });
+      result = (function() {
+        var _j, _len1, _results;
+        _results = [];
+        for (_j = 0, _len1 = sortedLocations.length; _j < _len1; _j++) {
+          sloc = sortedLocations[_j];
+          _results.push(sloc.location);
+        }
+        return _results;
+      })();
+      return result;
     };
     $.Locaternator = function(options) {
       var getLocation, jobs, loadLocations, opts;
@@ -87,7 +93,7 @@
         locations: loadLocations
       };
       return async.parallel(jobs, function(err, result) {
-        var closest, localCoord;
+        var closest, localCoord, sorted;
         if (err) {
           console.error("got error", err);
         } else {
@@ -95,8 +101,9 @@
             lat: result.location.latitude,
             lon: result.location.longitude
           };
-          closest = closestLocationFinder(localCoord, result.locations);
-          $(document).trigger("locaternated", [result.location, result.locations, closest]);
+          sorted = sortByClosest(localCoord, result.locations);
+          closest = sorted.shift();
+          $(document).trigger("locaternated", [result.location, sorted, closest]);
         }
       });
     };
