@@ -49,9 +49,9 @@ whether provided directly as an array, ala
 
 ```javascript
 $(document).ready(function(){
-  $(document).on("locaternated", function(evt, yourLocation, locations, closest){
-    console.log("You are at", yourLocation, "closest is", closest, "remaining locations sorted by distance", locations);
-    // do fancy stuff with yourLocation, locations, and closest
+  $(document).on("locaternated", function(evt, yourLocation, closest, otherLocations){
+    console.log("You are at", yourLocation, "closest is", closest, "remaining locations sorted by distance", otherLocations);
+    // do fancy stuff with yourLocation, otherLocations, and closest
   });
   $.Locaternator({
     locations: myLocationsArray // or "/someLocations.json"
@@ -62,6 +62,33 @@ or loaded from a `json` feed / file.
 
 You can add whatever other fields you wish to the location object so long as it has a `name` and `coordinate` fields,
 and the `coordinate` field has a `lat` and a `lon` represented as decimal degrees.
+
+In addition you can provide a `currentLocation` object if you already know the current location.
+This is of the form `{lat: 0, lon: 0}` eg:
+
+```javascript
+$.Locaternator({
+  currentLocation: {
+    lat: 25.123
+    lon: 0.05
+  },
+  geonames: {
+    account: "/data/geonamesCredentials.json" // this is the default.
+  }
+})
+```
+
+Note to use this service you must provide a [geonames.org](http://www.geonames.org) username which will be pulled from a server-side JSON file, thus not exposing it to the outside world.
+
+```json
+{
+  "username": "yourgeonamesusername"
+}
+```
+
+The plugin will attempt to look up the place name using [geonames.org's 'findNearbyPlaceName' JSONP api](http://www.geonames.org/export/web-services.html#findNearbyPlaceName).
+
+Note for the test to run you **must** replace the "demo" username with your own registered username.
 
 ### Custom GeoIP server
 
@@ -89,6 +116,11 @@ npm install
 
 ### To Test
 
+First replace the word "demo" with your own registered username **as per the instructions above**, in 
+the file `test/geonamesCredentials.json`
+
+Then:
+
 ```bash
 grunt test
 ```
@@ -103,17 +135,19 @@ This will output the final distribution files into the `dist/` folder, prefixed 
 
 Files created are:
 
-* `jquery-locaternator.1.0.3.js` — the 'developer' version.
-* `jquery-locaternator.1.0.3.min.js` — The minified version for production use.
-* `jquery-locaternator.1.0.3.min.js.map` — The `sourcemap` file for debugging using the minified version.
+* `jquery-locaternator.1.0.4.js` — the 'developer' version.
+* `jquery-locaternator.1.0.4.min.js` — The minified version for production use.
+* `jquery-locaternator.1.0.4.min.js.map` — The `sourcemap` file for debugging using the minified version.
 
 ## Thanks
 
-Thanks to [freegeoip.net](http://freegeoip.net) for providing such a cool, free service.
+Thanks to [freegeoip.net](http://www.freegeoip.net) for providing such a cool, free service.
+Thanks to [geonames.org](http://www.geonames.org) for also providing such a cool free service.
 
 ### Important Note
 
-*Please don't use this utility to thrash the FreeGeoIP system*
+1. Please *don't* use this utility to thrash the FreeGeoIP system
+2. Please *register* with [geonames.org](http://www.geonames.org) before running the tests.
 
 #### Limits
 
@@ -122,6 +156,8 @@ From the [freegeoip.net page](http://freegeoip.net)
 > API usage is limited to 10,000 queries per hour.
 > After reaching this limit, all requests will result
 > in HTTP 403 (Forbidden) until the roll over.
+
+See [Geonames' credits system](http://www.geonames.org/export/credits.html) for more on how their system works.
 
 ## License
 

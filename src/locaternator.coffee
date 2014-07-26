@@ -26,12 +26,40 @@
     @options = if typeof options is "object" then $.extend(true, opts, options) else opts
 
     getLocation = (callback) =>
-      geoIPOtions =
-        url: @options.geoIP.jsonURL
-        dataType: @options.geoIP.dataType
-      $.ajax(geoIPOtions).done (data) ->
-        callback null, data
+      if @options.currentLocation
+        getGeoNamesUsername (err, username) =>
+          findNearbyPlaceName @options.currentLocation, username, callback
+      else
+        geoIPOtions =
+          url: @options.geoIP.jsonURL
+          dataType: @options.geoIP.dataType
+        $.ajax(geoIPOtions).done (data) ->
+          callback null, data
+          return
+      return
+
+    getGeoNamesUsername = (next) =>
+      $.getJSON @options.geonames.account, (data) ->
+        # data = JSON.parse(data) if typeof data is "string" # needed for testing.
+        next null, data.username
         return
+      return
+
+    findNearbyPlaceName = (location, username, next) ->
+      ajaxOpts =
+        url: "http://api.geonames.org/findNearbyPlaceNameJSON?lat=#{location.lat}&lng=#{location.lon}&username=#{username}&maxRows=1"
+        dataType: "jsonp"
+        success: (data) ->
+          if data.geonames?.length > 0
+            loc =
+              latitude: location.lat
+              longitude: location.lon
+              name: data.geonames[0]?.toponymName
+            next null, loc
+          else
+            console.error "findNearbyPlaceName returned error", data
+            next data, null
+      $.ajax ajaxOpts
       return
 
     loadLocations = (callback) =>
@@ -44,7 +72,8 @@
       if @options.locations instanceof Array
         callback null, @options.locations
         return
-      $.get @options.locations, (data) ->
+      $.getJSON @options.locations, (data) ->
+        # data = JSON.parse(data) if typeof data is "string" # needed for testing.
         callback null, data
         return
       return
@@ -52,6 +81,9 @@
     jobs =
       location: getLocation
       locations: loadLocations
+    
+    # console.debug "running with options", @options
+    
     async.parallel jobs, (err, result) ->
       if err
         console.error "got error", err
@@ -59,9 +91,12 @@
         localCoord =
           lat: result.location.latitude
           lon: result.location.longitude
-        sorted = sortByClosest(localCoord, result.locations)
-        closest = sorted.shift()
-        $(document).trigger "locaternated", [result.location, sorted, closest]
+        sorted = []
+        closest = undefined
+        if result.locations.length > 0
+          sorted = sortByClosest(localCoord, result.locations)
+          closest = sorted.shift()
+        $(document).trigger "locaternated", [result.location, closest, sorted]
       return
 
   # defaults
@@ -70,5 +105,8 @@
     geoIP:
       jsonURL: "http://freegeoip.net/json/"
       dataType: "jsonp"
+    currentLocation: null
+    geonames:
+      account: "/data/geonamesCredentials.json"
 ) jQuery, async, document
 

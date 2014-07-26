@@ -1,5 +1,5 @@
 /*!
- * A jQuery plugin for specific location handling - v1.0.3 - 2014-07-24
+ * A jQuery plugin for specific location handling - v1.0.4 - 2014-07-26
  * https://github.com/davesag/locaternator
  * Copyright (c) 2014 Dave Sag; Licensed MIT
  */
@@ -54,21 +54,56 @@
       return result;
     };
     $.Locaternator = function(options) {
-      var getLocation, jobs, loadLocations, opts;
+      var findNearbyPlaceName, getGeoNamesUsername, getLocation, jobs, loadLocations, opts;
       opts = $.extend(true, {}, $.Locaternator.options);
       this.options = typeof options === "object" ? $.extend(true, opts, options) : opts;
       getLocation = (function(_this) {
         return function(callback) {
           var geoIPOtions;
-          geoIPOtions = {
-            url: _this.options.geoIP.jsonURL,
-            dataType: _this.options.geoIP.dataType
-          };
-          $.ajax(geoIPOtions).done(function(data) {
-            callback(null, data);
+          if (_this.options.currentLocation) {
+            getGeoNamesUsername(function(err, username) {
+              return findNearbyPlaceName(_this.options.currentLocation, username, callback);
+            });
+          } else {
+            geoIPOtions = {
+              url: _this.options.geoIP.jsonURL,
+              dataType: _this.options.geoIP.dataType
+            };
+            $.ajax(geoIPOtions).done(function(data) {
+              callback(null, data);
+            });
+          }
+        };
+      })(this);
+      getGeoNamesUsername = (function(_this) {
+        return function(next) {
+          $.getJSON(_this.options.geonames.account, function(data) {
+            next(null, data.username);
           });
         };
       })(this);
+      findNearbyPlaceName = function(location, username, next) {
+        var ajaxOpts;
+        ajaxOpts = {
+          url: "http://api.geonames.org/findNearbyPlaceNameJSON?lat=" + location.lat + "&lng=" + location.lon + "&username=" + username + "&maxRows=1",
+          dataType: "jsonp",
+          success: function(data) {
+            var loc, _ref, _ref1;
+            if (((_ref = data.geonames) != null ? _ref.length : void 0) > 0) {
+              loc = {
+                latitude: location.lat,
+                longitude: location.lon,
+                name: (_ref1 = data.geonames[0]) != null ? _ref1.toponymName : void 0
+              };
+              return next(null, loc);
+            } else {
+              console.error("findNearbyPlaceName returned error", data);
+              return next(data, null);
+            }
+          }
+        };
+        $.ajax(ajaxOpts);
+      };
       loadLocations = (function(_this) {
         return function(callback) {
           if (!(typeof _this.options.locations === "string" || _this.options.locations instanceof Array)) {
@@ -83,7 +118,7 @@
             callback(null, _this.options.locations);
             return;
           }
-          $.get(_this.options.locations, function(data) {
+          $.getJSON(_this.options.locations, function(data) {
             callback(null, data);
           });
         };
@@ -101,9 +136,13 @@
             lat: result.location.latitude,
             lon: result.location.longitude
           };
-          sorted = sortByClosest(localCoord, result.locations);
-          closest = sorted.shift();
-          $(document).trigger("locaternated", [result.location, sorted, closest]);
+          sorted = [];
+          closest = void 0;
+          if (result.locations.length > 0) {
+            sorted = sortByClosest(localCoord, result.locations);
+            closest = sorted.shift();
+          }
+          $(document).trigger("locaternated", [result.location, closest, sorted]);
         }
       });
     };
@@ -112,6 +151,10 @@
       geoIP: {
         jsonURL: "http://freegeoip.net/json/",
         dataType: "jsonp"
+      },
+      currentLocation: null,
+      geonames: {
+        account: "/data/geonamesCredentials.json"
       }
     };
   })(jQuery, async, document);

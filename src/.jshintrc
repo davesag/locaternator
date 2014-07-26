@@ -8,6 +8,7 @@
   "camelcase": true,
   "curly": true,
   "eqeqeq": true,
+  "eqnull": true,
   "es3": false,
   "forin": false,
   "freeze": true,

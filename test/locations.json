@@ -1,0 +1,31 @@
+[
+  {
+    "name": "Rouge Coffee",
+    "coordinate": {
+      "lon": 153.018149,
+      "lat": -27.478748
+    }
+  },
+  {
+    "name": "The Dorset",
+    "coordinate": {
+      "lon": -0.139312,
+      "lat": 50.825604
+    }
+  },
+  {
+    "name": "The Northside Bowling Club",
+    "venueType": "club",
+    "coordinate": {
+      "lon": 149.124373,
+      "lat": -35.267852
+    }
+  },
+  {
+    "name": "The Rugby Union Club",
+    "coordinate": {
+      "lon": 149.136525,
+      "lat": -35.308522
+    }
+  }
+]
