@@ -2,7 +2,8 @@ locaternator
 ============
 
 A simple jQuery plugin that uses [freegeoip.net](http://freegeoip.net) to determine where you are, 
-and the closest location to you from a given set of locations.
+and the closest location to you from a given set of locations, and uses [geonames.org](http://www.geonames.org)
+to retrieve your local place name information given supplied coordinates if you already know where you are.
 
 ## Usage
 
@@ -12,6 +13,8 @@ The **Locaternator** uses
 
 * [jQuery](https://jquery.com), and 
 * [async](https://github.com/caolan/async) to do its stuff.
+
+You **must register** with [geonames.org](http://www.geonames.org) to use their API.  It's free (as in beer).
 
 ### To Use
 
