@@ -20,6 +20,14 @@
       throws(block, [expected], [message])
   ###
 
+  QUnit.skipTest = ->
+    QUnit.test "#{arguments[0]} (SKIPPED)", ->
+      QUnit.expect 0 # dont expect any tests
+      $li = $("##{QUnit.config.current.id}")
+      QUnit.done ->
+        $li.css "background", "#FFFF99"
+  skipTest = QUnit.skipTest
+
   module "simple tests",
 
   asyncTest "finds a current location", ->
@@ -55,7 +63,7 @@
     $(document).on "locaternated", (evt, location, closest, otherLocations) ->
       notEqual evt, null, "expected the event to not be null"
       equal typeof location.latitude, "number", "expected the location's latitude to be a number, not #{typeof location.latitude}"
-      notEqual closest.name, "none", "expected the closest location to not be 'none'"
+      ok closest.name, "expected the closest location to have a name"
       equal otherLocations.length, 1, "expected the locations array to only have one element"
       console.debug "location", location, "closest", closest, "other locations", otherLocations
       $(document).off "locaternated"

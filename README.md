@@ -1,13 +1,17 @@
 locaternator
 ============
 
-A simple jQuery plugin that uses [freegeoip.net](http://freegeoip.net) to determine where you are, and the closest location to you from a given set of locations.
+A simple jQuery plugin that uses [freegeoip.net](http://freegeoip.net) to determine where you are, 
+and the closest location to you from a given set of locations.
 
 ## Usage
 
 ### Prerequsites
 
-The **Locaternator** uses [jQuery](https://jquery.com) and [async](https://github.com/caolan/async) to do its stuff.
+The **Locaternator** uses
+
+* [jQuery](https://jquery.com), and 
+* [async](https://github.com/caolan/async) to do its stuff.
 
 ### To Use
 
@@ -90,6 +94,21 @@ The plugin will attempt to look up the place name using [geonames.org's 'findNea
 
 Note for the test to run you **must** replace the "demo" username with your own registered username.
 
+#### Received Data
+
+The data we get back from either `geonames` or `freegeoip` is coerced into the following uniform structure
+
+```yml
+- name: "a name"
+  latitude: 0
+  longitude: 0
+  address:
+    subnationalDivision: "a region name"
+    country:
+      name: "country name"
+      code: "ISO_3166-1_alpha-2 code"
+```
+
 ### Custom GeoIP server
 
 You can also add options for using a different GeoIP server if, for example, you are
@@ -135,9 +154,9 @@ This will output the final distribution files into the `dist/` folder, prefixed 
 
 Files created are:
 
-* `jquery-locaternator.1.0.4.js` — the 'developer' version.
-* `jquery-locaternator.1.0.4.min.js` — The minified version for production use.
-* `jquery-locaternator.1.0.4.min.js.map` — The `sourcemap` file for debugging using the minified version.
+* `jquery-locaternator.1.0.5.js` — the 'developer' version.
+* `jquery-locaternator.1.0.5.min.js` — The minified version for production use.
+* `jquery-locaternator.1.0.5.min.js.map` — The `sourcemap` file for debugging using the minified version.
 
 ## Thanks
 

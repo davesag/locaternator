@@ -34,7 +34,17 @@
           url: @options.geoIP.jsonURL
           dataType: @options.geoIP.dataType
         $.ajax(geoIPOtions).done (data) ->
-          callback null, data
+          loc =
+            latitude: data.latitude
+            longitude: data.longitude
+            name: data.city
+            address:
+              subnationalDivision: data["region_name"]
+              country:
+                name: data["country_name"]
+                code: data["country_code"]
+          console.debug "get location", loc
+          callback null, loc
           return
       return
 
@@ -55,6 +65,12 @@
               latitude: location.lat
               longitude: location.lon
               name: data.geonames[0]?.toponymName
+              address:
+                subnationalDivision: data.geonames[0]?.adminName1
+                country:
+                  name: data.geonames[0]?.countryName
+                  code: data.geonames[0]?.countryCode
+            console.debug "get place", loc
             next null, loc
           else
             console.error "findNearbyPlaceName returned error", data

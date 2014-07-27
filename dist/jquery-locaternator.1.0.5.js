@@ -1,5 +1,5 @@
 /*!
- * A jQuery plugin for specific location handling - v1.0.4 - 2014-07-26
+ * A jQuery plugin for specific location handling - v1.0.5 - 2014-07-27
  * https://github.com/davesag/locaternator
  * Copyright (c) 2014 Dave Sag; Licensed MIT
  */
@@ -70,7 +70,21 @@
               dataType: _this.options.geoIP.dataType
             };
             $.ajax(geoIPOtions).done(function(data) {
-              callback(null, data);
+              var loc;
+              loc = {
+                latitude: data.latitude,
+                longitude: data.longitude,
+                name: data.city,
+                address: {
+                  subnationalDivision: data["region_name"],
+                  country: {
+                    name: data["country_name"],
+                    code: data["country_code"]
+                  }
+                }
+              };
+              console.debug("get location", loc);
+              callback(null, loc);
             });
           }
         };
@@ -88,13 +102,21 @@
           url: "http://api.geonames.org/findNearbyPlaceNameJSON?lat=" + location.lat + "&lng=" + location.lon + "&username=" + username + "&maxRows=1",
           dataType: "jsonp",
           success: function(data) {
-            var loc, _ref, _ref1;
+            var loc, _ref, _ref1, _ref2, _ref3, _ref4;
             if (((_ref = data.geonames) != null ? _ref.length : void 0) > 0) {
               loc = {
                 latitude: location.lat,
                 longitude: location.lon,
-                name: (_ref1 = data.geonames[0]) != null ? _ref1.toponymName : void 0
+                name: (_ref1 = data.geonames[0]) != null ? _ref1.toponymName : void 0,
+                address: {
+                  subnationalDivision: (_ref2 = data.geonames[0]) != null ? _ref2.adminName1 : void 0,
+                  country: {
+                    name: (_ref3 = data.geonames[0]) != null ? _ref3.countryName : void 0,
+                    code: (_ref4 = data.geonames[0]) != null ? _ref4.countryCode : void 0
+                  }
+                }
               };
+              console.debug("get place", loc);
               return next(null, loc);
             } else {
               console.error("findNearbyPlaceName returned error", data);
