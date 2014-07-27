@@ -43,7 +43,6 @@
               country:
                 name: data["country_name"]
                 code: data["country_code"]
-          console.debug "get location", loc
           callback null, loc
           return
       return
@@ -70,7 +69,6 @@
                 country:
                   name: data.geonames[0]?.countryName
                   code: data.geonames[0]?.countryCode
-            console.debug "get place", loc
             next null, loc
           else
             console.error "findNearbyPlaceName returned error", data
@@ -103,6 +101,7 @@
     async.parallel jobs, (err, result) ->
       if err
         console.error "got error", err
+        $(document).trigger "locaternated-error", [err]
       else
         localCoord =
           lat: result.location.latitude

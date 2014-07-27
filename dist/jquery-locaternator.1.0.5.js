@@ -83,7 +83,6 @@
                   }
                 }
               };
-              console.debug("get location", loc);
               callback(null, loc);
             });
           }
@@ -116,7 +115,6 @@
                   }
                 }
               };
-              console.debug("get place", loc);
               return next(null, loc);
             } else {
               console.error("findNearbyPlaceName returned error", data);
@@ -153,6 +151,7 @@
         var closest, localCoord, sorted;
         if (err) {
           console.error("got error", err);
+          $(document).trigger("locaternated-error", [err]);
         } else {
           localCoord = {
             lat: result.location.latitude,

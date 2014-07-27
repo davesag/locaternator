@@ -15,13 +15,18 @@ The **Locaternator** uses
 
 ### To Use
 
-Your page should expect a `document` level event called "`locaternated`"
+Your page should expect either a `document` level event called "`locaternated`" or
+an event called "`locaternated-error`", only one of which will be thrown.
 
 ```javascript
 $(document).ready(function(){
   $(document).on("locaternated", function(evt, location){
     console.log("Found location", location);
     // do fancy stuff with location
+  });
+  $(document).on("locaternated-error", function(evt, err){
+    console.log("Got error", err);
+    // handle the error depending on what went wrong.
   });
   $.Locaternator()
 });
