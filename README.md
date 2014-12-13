@@ -1,9 +1,10 @@
 locaternator
 ============
 
-A simple jQuery plugin that uses [freegeoip.net](http://freegeoip.net) to determine where you are, 
-and the closest location to you from a given set of locations, and uses [geonames.org](http://www.geonames.org)
-to retrieve your local place name information given supplied coordinates if you already know where you are.
+A simple, configurable, jQuery plugin that uses either [telize](http://www.telize.com), or 
+[freegeoip.net](http://freegeoip.net)  to determine where you are, and the closest location to you
+from a given set of locations, and uses [geonames.org](http://www.geonames.org) to retrieve your
+local place name information given supplied coordinates if you already know where you are.
 
 ## Usage
 
@@ -104,7 +105,7 @@ Note for the test to run you **must** replace the "demo" username with your own 
 
 #### Received Data
 
-The data we get back from either `geonames` or `freegeoip` is coerced into the following uniform structure
+The data we get back from either `geonames` or `telize/freegeoip` is coerced into the following uniform structure
 
 ```yml
 - name: "a name"
@@ -117,6 +118,22 @@ The data we get back from either `geonames` or `freegeoip` is coerced into the f
       code: "ISO_3166-1_alpha-2 code"
 ```
 
+### Alternative GeoIP servers
+
+You can use the following GeoIP servers by just naming the default.
+
+* '*telize*' - provided by [Telize](http://www.telize.com). <-- The default.
+* 'geoIP' - provided by [freegeoip.net](http://www.freegeoip.net), or
+
+```javascript
+$.Locaternator({
+  locationServices: {
+    default: "geoIP" // or 'telize'
+  }
+})
+```
+
+
 ### Custom GeoIP server
 
 You can also add options for using a different GeoIP server if, for example, you are
@@ -124,12 +141,22 @@ You can also add options for using a different GeoIP server if, for example, you
 
 ```javascript
 $.Locaternator({
-  geoIP: {
-    jsonURL: "/whatever",
-    dataType: "json"
+  
+  locationServices: {
+    default: "myGeoIPServer",
+    myGeoIPServer: {
+      jsonURL: "/whatever",
+      dataType: "jsonp",
+      fields: {
+        region: "what_they_call_a_region",
+        country: "what_they_call_a_country"
+      }
+    }
   }
 })
 ```
+
+The defaults 
 
 ## Buildage
 
