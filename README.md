@@ -6,8 +6,6 @@ A simple, configurable, jQuery plugin that uses either [telize](http://www.teliz
 from a given set of locations, and uses [geonames.org](http://www.geonames.org) to retrieve your
 local place name information given supplied coordinates if you already know where you are.
 
-## Usage
-
 ### Prerequsites
 
 The **Locaternator** uses
@@ -17,6 +15,10 @@ The **Locaternator** uses
 
 You **must register** with [geonames.org](http://www.geonames.org) to use their API.  It's free (as in beer).
 The tests will likely not pass unless you provide your own GeoName username in `test/geonamesCredentials.json`
+
+## Usage
+
+See it in use at [the Bit2Bit CTM Locations page](http://bit2bit.co/ctms.html).
 
 ### To Use
 
@@ -186,33 +188,50 @@ grunt test
 grunt
 ```
 
-This will output the final distribution files into the `dist/` folder, prefixed with `jquery` and suffixed with the version number you specify in `package.json`.
+This will output the final distribution files into the `dist/` folder, prefixed with `jquery`
+and suffixed with the version number you specify in `package.json`.
 
 Files created are:
 
-* `jquery-locaternator.1.0.5.js` — the 'developer' version.
-* `jquery-locaternator.1.0.5.min.js` — The minified version for production use.
-* `jquery-locaternator.1.0.5.min.js.map` — The `sourcemap` file for debugging using the minified version.
+* `jquery-locaternator.1.1.0.js` — the 'developer' version.
+* `jquery-locaternator.1.1.0.min.js` — The minified version for production use.
+* `jquery-locaternator.1.1.0.min.js.map` — The `sourcemap` file for debugging using the minified version.
 
 ## Thanks
 
-Thanks to [freegeoip.net](http://www.freegeoip.net) for providing such a cool, free service.
+Thanks to [telize.com](http://www.telize.com) for providing such a cool, working free service.
+Thanks to [freegeoip.net](http://www.freegeoip.net) for providing the original such cool, free service.
 Thanks to [geonames.org](http://www.geonames.org) for also providing such a cool free service.
 
 ### Important Note
 
-1. Please *don't* use this utility to thrash the FreeGeoIP system
-2. Please *register* with [geonames.org](http://www.geonames.org) before running the tests.
+1. Please *don't* use this utility to thrash the Telize and FreeGeoIP systems
+2. Please *register* with [geonames.org](http://www.geonames.org) before running the tests, or the tests will most likely fail.
 
 #### Limits
 
-From the [freegeoip.net page](http://freegeoip.net)
+If you choose to use the [freegeoip.net service](http://freegeoip.net) take note of this
+from the [freegeoip.net page](http://freegeoip.net)
 
 > API usage is limited to 10,000 queries per hour.
 > After reaching this limit, all requests will result
 > in HTTP 403 (Forbidden) until the roll over.
 
 See [Geonames' credits system](http://www.geonames.org/export/credits.html) for more on how their system works.
+
+### Version History
+
+Release `1.1.0`
+
+* Updated to use `Telize` as the default for Geo IP lookups. We retian FreeGEOIP as an option but it seems to be less reliable.
+
+Release `1.0.5`
+
+* You can now easily specify your own GeoIP  lookup services too.
+
+Release `1.0.0`
+
+* first release
 
 ## License
 
