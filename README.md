@@ -159,9 +159,48 @@ $.Locaternator({
 })
 ```
 
-The defaults 
+### Defaults
+
+The default options for the plugin are:
+
+
+```javascript
+{
+  service: function() {
+    return this.locationServices[this.locationServices["default"]];
+  },
+  locations: "",
+  locationServices: {
+    "default": "telize",
+    telize: {
+      jsonURL: "http://www.telize.com/geoip/",
+      dataType: "jsonp",
+      fields: {
+        region: "region",
+        country: "country"
+      }
+    },
+    geoIP: {
+      jsonURL: "http://freegeoip.net/json/",
+      dataType: "jsonp",
+      fields: {
+        region: "region_name",
+        country: "country_name"
+      }
+    }
+  },
+  currentLocation: null,
+  geonames: {
+    account: "/data/geonamesCredentials.json"
+  }
+}
+```
+
+You can selectively override anything in the default options object, including the `.service()` method.
 
 ## Buildage
+
+If you wish to build the release versions yourself you'll need `Node.js`, `grunt`, and `grunt-cli` installed.
 
 ### First
 
