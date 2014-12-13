@@ -16,6 +16,7 @@ The **Locaternator** uses
 * [async](https://github.com/caolan/async) to do its stuff.
 
 You **must register** with [geonames.org](http://www.geonames.org) to use their API.  It's free (as in beer).
+The tests will likely not pass unless you provide your own GeoName username in `test/geonamesCredentials.json`
 
 ### To Use
 
