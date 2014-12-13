@@ -30,18 +30,18 @@
         getGeoNamesUsername (err, username) =>
           findNearbyPlaceName @options.currentLocation, username, callback
       else
-        geoIPOtions =
-          url: @options.geoIP.jsonURL
-          dataType: @options.geoIP.dataType
-        $.ajax(geoIPOtions).done (data) ->
+        opts=
+          url: @options.service().jsonURL
+          dataType: @options.service().dataType
+        $.ajax(opts).done (data) =>
           loc =
             latitude: data.latitude
             longitude: data.longitude
             name: data.city
             address:
-              subnationalDivision: data["region_name"]
+              subnationalDivision: data[@options.service().fields.region]
               country:
-                name: data["country_name"]
+                name: data[@options.service().fields.country]
                 code: data["country_code"]
           callback null, loc
           return
@@ -116,10 +116,23 @@
 
   # defaults
   $.Locaternator.options =
+    service: ->
+      @locationServices[@locationServices.default]
     locations: ""
-    geoIP:
-      jsonURL: "http://freegeoip.net/json/"
-      dataType: "jsonp"
+    locationServices:
+      default: "telize"
+      telize:
+        jsonURL: "http://www.telize.com/geoip/"
+        dataType: "jsonp"
+        fields:
+          region: "region"
+          country: "country"
+      geoIP:
+        jsonURL: "http://freegeoip.net/json/"
+        dataType: "jsonp"
+        fields:
+          region: "region_name"
+          country: "country_name"
     currentLocation: null
     geonames:
       account: "/data/geonamesCredentials.json"
