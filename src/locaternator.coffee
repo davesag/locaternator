@@ -117,7 +117,6 @@
   # defaults
   $.Locaternator.options =
     service: ->
-      # console.debug "@ is", @, @locationServices.default, @locationServices[@locationServices.default]
       @locationServices[@locationServices.default]
     locations: ""
     locationServices:
