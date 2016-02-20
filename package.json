@@ -2,7 +2,7 @@
   "name": "locaternator",
   "title": "A jQuery plugin for specific location finding and displaying",
   "description": "A simple jQuery plugin that uses telize.com or freegeoip.net to determine where you are, and the closest location to you from a given set of locations",
-  "version": "1.1.0",
+  "version": "1.2.0",
   "main": "locaternator.js",
   "homepage": "https://github.com/davesag/locaternator",
   "author": {

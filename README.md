@@ -1,7 +1,7 @@
 locaternator
 ============
 
-A simple, configurable, jQuery plugin that uses either [telize](http://www.telize.com), or 
+A simple, configurable, jQuery plugin that uses either [ipinfo](http://ipinfo.io), or 
 [freegeoip.net](http://freegeoip.net)  to determine where you are, and the closest location to you
 from a given set of locations, and uses [geonames.org](http://www.geonames.org) to retrieve your
 local place name information given supplied coordinates if you already know where you are.
@@ -18,7 +18,7 @@ The tests will likely not pass unless you provide your own GeoName username in `
 
 ## Usage
 
-See it in use at [the Bit2Bit CTM Locations page](http://bit2bit.co/ctms.html).
+See it in use at [the Bit2Bit CTM Locations page](http://bit2bit.co/atms.html).
 
 ### To Use
 
@@ -125,17 +125,16 @@ The data we get back from either `geonames` or `telize/freegeoip` is coerced int
 
 You can use the following GeoIP servers by just naming the default.
 
-* '*telize*' - provided by [Telize](http://www.telize.com). <-- The default.
+* '*ipinfo*' - provided by [ipinfo](http://ipinfo.io). <-- The default.
 * 'geoIP' - provided by [freegeoip.net](http://www.freegeoip.net), or
 
 ```javascript
 $.Locaternator({
   locationServices: {
-    default: "geoIP" // or 'telize'
+    default: "geoIP" // or 'ipinfo'
   }
 })
 ```
-
 
 ### Custom GeoIP server
 
@@ -171,13 +170,14 @@ The default options for the plugin are:
   },
   locations: "",
   locationServices: {
-    "default": "telize",
+    "default": "ipinfo",
     telize: {
-      jsonURL: "http://www.telize.com/geoip/",
-      dataType: "jsonp",
+      jsonURL: "http://ipinfo.io",
+      dataType: "json",
       fields: {
         region: "region",
         country: "country"
+        location: "loc"
       }
     },
     geoIP: {
@@ -232,9 +232,9 @@ and suffixed with the version number you specify in `package.json`.
 
 Files created are:
 
-* `jquery-locaternator.1.1.0.js` — the 'developer' version.
-* `jquery-locaternator.1.1.0.min.js` — The minified version for production use.
-* `jquery-locaternator.1.1.0.min.js.map` — The `sourcemap` file for debugging using the minified version.
+* `jquery-locaternator.1.2.0.js` — the 'developer' version.
+* `jquery-locaternator.1.2.0.min.js` — The minified version for production use.
+* `jquery-locaternator.1.2.0.min.js.map` — The `sourcemap` file for debugging using the minified version.
 
 ## Thanks
 
@@ -260,9 +260,13 @@ See [Geonames' credits system](http://www.geonames.org/export/credits.html) for 
 
 ### Version History
 
+Release `1.2.0`
+
+* Updated to use `Telize` as the default for Geo IP lookups, since Telize no longer offers a free option.  We also retain `FreeGEOIP` as an option but it seems to be less reliable these days.
+
 Release `1.1.0`
 
-* Updated to use `Telize` as the default for Geo IP lookups. We retian FreeGEOIP as an option but it seems to be less reliable.
+* Updated to use `Telize` as the default for Geo IP lookups. We retain FreeGEOIP as an option but it seems to be less reliable.
 
 Release `1.0.5`
 
