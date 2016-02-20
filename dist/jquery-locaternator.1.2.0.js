@@ -1,7 +1,7 @@
 /*!
- * A jQuery plugin for specific location finding and displaying - v1.1.0 - 2014-12-13
+ * A jQuery plugin for specific location finding and displaying - v1.2.0 - 2016-02-20
  * https://github.com/davesag/locaternator
- * Copyright (c) 2014 Dave Sag; Licensed MIT
+ * Copyright (c) 2016 Dave Sag; Licensed MIT
  */
 (function() {
   if (typeof jQuery === "undefined") {
@@ -69,7 +69,7 @@
               dataType: _this.options.service().dataType
             };
             $.ajax(opts).done(function(data) {
-              var loc;
+              var loc, locationString;
               loc = {
                 latitude: data.latitude,
                 longitude: data.longitude,
@@ -82,6 +82,11 @@
                   }
                 }
               };
+              if ((loc.latitude === void 0 || loc.longitude === void 0) && typeof data[_this.options.service().fields.location] === "string") {
+                locationString = data[_this.options.service().fields.location].split(",");
+                loc.latitude = parseFloat(locationString[0]);
+                loc.longitude = parseFloat(locationString[1]);
+              }
               callback(null, loc);
             });
           }
@@ -172,13 +177,14 @@
       },
       locations: "",
       locationServices: {
-        "default": "telize",
-        telize: {
-          jsonURL: "http://www.telize.com/geoip/",
-          dataType: "jsonp",
+        "default": "ipinfo",
+        ipinfo: {
+          jsonURL: "http://ipinfo.io",
+          dataType: "json",
           fields: {
             region: "region",
-            country: "country"
+            country: "country",
+            location: "loc"
           }
         },
         geoIP: {

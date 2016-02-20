@@ -43,6 +43,11 @@
               country:
                 name: data[@options.service().fields.country]
                 code: data["country_code"]
+          if (loc.latitude is undefined or loc.longitude is undefined) and typeof data[@options.service().fields.location] is "string"
+            # look for a location string instead
+            locationString = data[@options.service().fields.location].split(",")
+            loc.latitude = parseFloat locationString[0]
+            loc.longitude = parseFloat locationString[1]
           callback null, loc
           return
       return
@@ -115,18 +120,20 @@
       return
 
   # defaults
+  # note when defining services: some sevices return a latitude and longitide and some a combined location.
   $.Locaternator.options =
     service: ->
       @locationServices[@locationServices.default]
     locations: ""
     locationServices:
-      default: "telize"
-      telize:
-        jsonURL: "http://www.telize.com/geoip/"
-        dataType: "jsonp"
+      default: "ipinfo"
+      ipinfo:
+        jsonURL: "http://ipinfo.io"
+        dataType: "json"
         fields:
           region: "region"
           country: "country"
+          location: "loc"
       geoIP:
         jsonURL: "http://freegeoip.net/json/"
         dataType: "jsonp"
